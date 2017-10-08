@@ -10,9 +10,7 @@
   },
   "author": "Mario Grieco",
   "license": "MIT",
-  "devDependencies": {
-    "standard": "^10.0.3"
-  },
+  "devDependencies": {},
   "engines": {
     "node": "8.4.0"
   },
