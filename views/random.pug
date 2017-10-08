@@ -1,0 +1,103 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1, user-scalable=no")
+    meta(name="description", content="")
+    meta(name="author", content="")
+    title Clean Blog - Start Bootstrap Theme
+    // Bootstrap core CSS
+    link(href="/vendor/bootstrap/css/bootstrap.min.css", rel="stylesheet")
+    // Custom fonts for this template
+    link(href="/vendor/font-awesome/css/font-awesome.min.css", rel="stylesheet", type="text/css")
+    link(href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic", rel="stylesheet", type="text/css")
+    link(href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800", rel="stylesheet", type="text/css")
+    // Custom styles for this template
+    link(href="/css/clean-blog.min.css", rel="stylesheet")
+  body
+    // Navigation
+    nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top
+      .container
+        a.navbar-brand(href="/") Home
+        button.navbar-toggler.navbar-toggler-right(type="button", data-toggle="collapse", data-target="#navbarResponsive", aria-controls="navbarResponsive", aria-expanded="false", aria-label="Toggle navigation")
+          | Menu
+          i.fa.fa-bars
+        #navbarResponsive.collapse.navbar-collapse
+          ul.navbar-nav.ml-auto
+            li.nav-item
+              a.nav-link(href="/random") Random Post
+            li.collapse.multi-collapse#btnBuscar 
+              input(type="text", placeholder="name").form-control.input-text
+            li.nav-item
+              a.nav-link(href="#btnBuscar", ria-expanded="false", aria-controls="btnBuscar", data-toggle="collapse")
+                i.fa.fa-search(aria-hidden="true")
+    // Page Header
+    header.masthead(style="background-image: url('"+url+"')")
+      .container
+        .row
+          .col-lg-8.col-md-10.mx-auto
+            .post-heading
+              a(href=post.data.url, target="_blank").titleh1
+                h1 #{post.data.title}
+              h2.subheading #{post.data.subreddit}
+              p.post-meta
+                span
+                  | Posted by
+                  a(href="#").a-random  #{post.data.author}
+                span
+                  | on #{new Date((post.data.created_utc*1000)).toString().slice(0,15)}
+                span.items-meta.pull-right
+                  //- span
+                    i.fa.fa-thumbs-up(aria-hidden="true")
+                    | #{post.data.likes}
+                  span
+                    i.fa.fa-comments-o(aria-hidden="true")
+                    | #{post.data.num_comments}
+                  span
+                    i.fa.fa-level-up(aria-hidden="true")
+                    | #{post.data.score}
+    // Post Content
+    article
+      .container
+        .row
+          .col-lg-8.col-md-10.mx-auto
+            - for (var i = 0; i < comments.length; i++ ){ 
+              .card
+                .card-body
+                  h4.card-title #{comments[i].data.author}
+                  p.card-text
+                    | #{comments[i].data.body}
+                  p.card-text
+                    small.text-muted.pull-right Since #{new Date((comments[i].data.created_utc*1000)).toString().slice(0,15)}
+              br
+            - }
+    hr  
+    // Footer
+    footer
+      .container
+        .row
+          .col-lg-8.col-md-10.mx-auto
+            ul.list-inline.text-center
+              li.list-inline-item
+                a(href="#")
+                  span.fa-stack.fa-lg
+                    i.fa.fa-circle.fa-stack-2x
+                    i.fa.fa-twitter.fa-stack-1x.fa-inverse
+              li.list-inline-item
+                a(href="#")
+                  span.fa-stack.fa-lg
+                    i.fa.fa-circle.fa-stack-2x
+                    i.fa.fa-facebook.fa-stack-1x.fa-inverse
+              li.list-inline-item
+                a(href="#")
+                  span.fa-stack.fa-lg
+                    i.fa.fa-circle.fa-stack-2x
+                    i.fa.fa-github.fa-stack-1x.fa-inverse
+            p.copyright.text-muted Copyright © Your Website 2017
+    // Bootstrap core JavaScript
+    script(src="/vendor/jquery/jquery.min.js")
+    script(src="/vendor/popper/popper.min.js")
+    script(src="/vendor/bootstrap/js/bootstrap.min.js")
+    // Custom scripts for this template
+    script(src="/js/clean-blog.min.js")
+    link(rel="stylesheet", href="css/my.css")
