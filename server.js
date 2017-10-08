@@ -1,9 +1,9 @@
 'use strict' 
 
 const express = require('express')
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const expressSession = require('express-session');
+// const bodyParser = require('body-parser');
+// const cookieParser = require('cookie-parser');
+// const expressSession = require('express-session');
 const rawjs = require('raw.js');
 const reddit = new rawjs("Node express Reddit Client");
 
