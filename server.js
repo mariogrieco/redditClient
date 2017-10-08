@@ -7,7 +7,6 @@ const expressSession = require('express-session');
 const rawjs = require('raw.js');
 const reddit = new rawjs("Node express Reddit Client");
 
-console.log(process.env.clientID, 'as id');
 reddit.setupOAuth2(process.env.clientID, process.env.clientSecret, process.env.callbackURL)
 const app = express();
 
