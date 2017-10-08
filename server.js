@@ -14,14 +14,14 @@ app.set('port', '80');
 app.set('view engine', 'pug');
 
 app.use(express.static(__dirname + '/public'));
-app.use(cookieParser(process.env.secretKey))
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-app.use(expressSession({ 
-  secret: process.env.secretKey, 
-  resave: true, 
-  saveUninitialized: true
-}));
+// app.use(cookieParser(process.env.secretKey))
+// app.use(bodyParser.urlencoded({ extended: false }))
+// app.use(bodyParser.json())
+// app.use(expressSession({ 
+  // secret: process.env.secretKey, 
+  // resave: false, 
+  // saveUninitialized: false
+// }));
 
 app.get(['/', '/index', '/home'], (req, res) => {
   let config = {
