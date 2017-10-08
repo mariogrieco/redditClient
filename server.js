@@ -10,7 +10,7 @@ const reddit = new rawjs("Node express Reddit Client");
 reddit.setupOAuth2(process.env.clientID, process.env.clientSecret, process.env.callbackURL)
 const app = express();
 
-app.set('port', '80');
+app.set('PORT', process.env.PORT|'80');
 app.set('view engine', 'pug');
 
 app.use(express.static(__dirname + '/public'));
@@ -187,4 +187,4 @@ app.get('*', (req, res) => {
   })
 })
 
-app.listen(app.get('port'))
+app.listen(app.get('PORT'))
