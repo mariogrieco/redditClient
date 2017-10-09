@@ -13,7 +13,7 @@ const app = express();
 app.set('PORT', process.env.PORT|'80');
 app.set('view engine', 'pug');
 
-app.use(express.static('./public'));
+app.use(express.static('public'));
 // app.use(cookieParser(process.env.secretKey))
 // app.use(bodyParser.urlencoded({ extended: false }))
 // app.use(bodyParser.json())
