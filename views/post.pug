@@ -11,36 +11,40 @@ html(lang="en", ng-app="redditClient")
         .row
           .col-lg-8.col-md-10.mx-auto
             .post-heading
-              h1 TITLE
-              h2.subheading subreddit
+              h1 #{post.title}
+              h2.subheading #{post.subreddit}
               p.post-meta
                 span
                   | Posted by
-                  a(href="#") author
+                  a(href="#") #{post.author}
                 span
-                  | on created
+                  | since  #{new Date(post.created_utc*1000).toString().slice(0,15)}
                 span.items-meta.pull-right
                   //- span
                     i.fa.fa-thumbs-up(aria-hidden="true")
                     | #{post.data.likes}
                   span
                     i.fa.fa-comments-o(aria-hidden="true")
-                    | num_comments
+                    | #{post.num_comments}
                   span
                     i.fa.fa-level-up(aria-hidden="true")
-                    | score
+                    | #{post.score} 
+                    //- permalink
     // Post Content
     article
       .container
         .row
           .col-lg-8.col-md-10.mx-auto
-            .card
-              .card-body
-                h4.card-title Card title
-                p.card-text
-                  | This is a wider card with supporting text below as a natural lead-in to additional   content.           This content is a little bit longer.
-                p.card-text
-                  small.text-muted Last updated 3 mins ago
+            - for (var i = 0; i < comments.length; i++ ){ 
+              .card
+                .card-body
+                  h4.card-title #{comments[i].data.author}
+                  p.card-text
+                    | #{comments[i].data.body}
+                  p.card-text
+                    small.text-muted.pull-right Since #{new Date((comments[i].data.created_utc*1000)).toString().slice(0,15)}
+              br
+            - }
     hr
     // Footer
     include footer

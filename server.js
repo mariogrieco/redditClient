@@ -5,7 +5,7 @@ var express = require('express');
 // var cookieParser = require('cookie-parser');
 // var expressSession = require('express-session');
 var rawjs = require('raw.js');
-// var request = require('request');
+var request = require('request');
 var reddit = new rawjs("Node express Reddit Client");
 
 reddit.setupOAuth2(process.env.clientID, process.env.clientSecret, process.env.callbackURL)
@@ -109,11 +109,38 @@ app.get('/search', function (req, res) {
   }
 });
 
+function getInfo (req, res, next) {
+  // nottheonion => r
+  // id ...7511p5
+  var url = 'https://www.reddit.com/r/'+req.query.r+'/comments/'+req.query.id+'.json';
+  // if (req.query.q || req.query.id) {
+  //   res.json({
+  //     message: 'empty query string'
+  //   })
+  // }
+  request({
+    url,
+    json: true,
+    jsonReviver: true
+  }, function(e, r, b) {
+    if (e || r.statusCode == '404') {
+      res.send(e|| { message: 404 });
+    }
+    else {
+      res.locals.postInfo = b;
+      next()
+    }
+  })
+}
 // view for post details and comments...
-app.get('/post', function (req, res) {
+app.get('/post', getInfo, function (req, res) {
   // params.sub...and query
-  // res.render('post',)
-  res.send('');
+  // res.json(res.locals.postInfo[0]);
+  // {"message": "Not Found", "error": 404}
+  res.render('post', {
+    post: res.locals.postInfo[0].data.children[0].data,
+    comments: res.locals.postInfo[1].data.children
+  });
 })
 
 /**
