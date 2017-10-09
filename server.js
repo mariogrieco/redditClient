@@ -123,8 +123,8 @@ function getInfo (req, res, next) {
     json: true,
     jsonReviver: true
   }, function(e, r, b) {
-    if (e || r.statusCode == '404') {
-      res.send(e|| { message: 404 });
+    if (e || r.statusCode == '404' || r.statusCode == '403') {
+      res.send(e|| { message: r.statusCode });
     }
     else {
       res.locals.postInfo = b;
@@ -138,8 +138,9 @@ app.get('/post', getInfo, function (req, res) {
   // res.json(res.locals.postInfo[0]);
   // {"message": "Not Found", "error": 404}
   res.render('post', {
-    post: res.locals.postInfo[0].data.children[0].data,
-    comments: res.locals.postInfo[1].data.children
+    post: res.locals.postInfo[0].data.children[0].data || {}, 
+    url: res.locals.postInfo[0].data.children[0].data.url || "",
+    comments: res.locals.postInfo[1].data.children || []
   });
 })
 
