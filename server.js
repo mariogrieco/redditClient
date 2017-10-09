@@ -1,19 +1,19 @@
 'use strict' 
 
-const express = require('express')
-// const bodyParser = require('body-parser');
-// const cookieParser = require('cookie-parser');
-// const expressSession = require('express-session');
-const rawjs = require('raw.js');
-const reddit = new rawjs("Node express Reddit Client");
+var express = require('express')
+// var bodyParser = require('body-parser');
+// var cookieParser = require('cookie-parser');
+// var expressSession = require('express-session');
+var rawjs = require('raw.js');
+var reddit = new rawjs("Node express Reddit Client");
 
 reddit.setupOAuth2(process.env.clientID, process.env.clientSecret, process.env.callbackURL)
-const app = express();
+var app = express();
 
-app.set('PORT', process.env.PORT|'80');
+app.set('PORT', process.env.PORT || '80');
 app.set('view engine', 'pug');
 
-app.use(express.static('./public'));
+app.use(express.static(__dirname + '/public'));
 // app.use(cookieParser(process.env.secretKey))
 // app.use(bodyParser.urlencoded({ extended: false }))
 // app.use(bodyParser.json())
@@ -23,11 +23,11 @@ app.use(express.static('./public'));
   // saveUninitialized: false
 // }));
 
-app.get(['/', '/index', '/home'], (req, res) => {
-  let config = {
+app.get('/', function (req, res) {
+  var config = {
     limit: 8,
   }
-  reddit.hot(config, (err, response) => {
+  reddit.hot(config, function (err, response) {
     if (err) {
       res.send({
         message: err
@@ -41,8 +41,8 @@ app.get(['/', '/index', '/home'], (req, res) => {
 })
 
 // view for random post
-app.get('/random', (req, res) => {
-  reddit.random((err, response) => {
+app.get('/random', function (req, res) {
+  reddit.random(function (err, response) {
     if (err) {
       res.send({
         message: err,
@@ -54,7 +54,7 @@ app.get('/random', (req, res) => {
         link: response.data.id,
         limit: 4,
         comments: true
-      }, (err, com) => {
+      }, function (err, com) {
          if(err) {
            res.json({
              err,
@@ -72,13 +72,14 @@ app.get('/random', (req, res) => {
   })
 })
 
-app.get('/search', (req, res) => {
+app.get('/search', function (req, res) {
   if (req.query.keyword) {
-    reddit.search({
+    var config = {
       q: req.query.keyword,
       sort: 'top',
       t: 'all'
-    }, (err, response) => { 
+    }
+    reddit.search(config, function (err, response) { 
       if (err) {
         res.send({
           message: err
@@ -99,7 +100,7 @@ app.get('/search', (req, res) => {
 });
 
 // view for post details and comments...
-app.get('/post', (req, res) => {
+app.get('/post', function (req, res) {
   // params.sub...and query
   // res.render('post',)
   // https://www.reddit.com/r/{{sub}}/comments/{{id}}.json
@@ -181,10 +182,12 @@ app.get('/post', (req, res) => {
 //   })
 // })
 
-app.get('*', (req, res) => {
+app.get('*', function (req, res) {
   res.status(404).json({
     message: '404'
   })
 })
 
-app.listen(app.get('PORT'))
+app.listen(app.get('PORT'), function () {
+  console.log('listen at ', app.get('PORT'))
+})
