@@ -1,10 +1,11 @@
 'use strict' 
 
-var express = require('express')
+var express = require('express');
 // var bodyParser = require('body-parser');
 // var cookieParser = require('cookie-parser');
 // var expressSession = require('express-session');
 var rawjs = require('raw.js');
+// var request = require('request');
 var reddit = new rawjs("Node express Reddit Client");
 
 reddit.setupOAuth2(process.env.clientID, process.env.clientSecret, process.env.callbackURL)
@@ -41,35 +42,44 @@ app.get('/', function (req, res) {
 })
 
 // view for random post
-app.get('/random', function (req, res) {
+function getRandom (req, res, next) {
   reddit.random(function (err, response) {
     if (err) {
       res.send({
         message: err,
         info: "api return"
       })
-    }else {
-      reddit.comments({
-        r: response.data.subreddit,
-        link: response.data.id,
-        limit: 4,
-        comments: true
-      }, function (err, com) {
-         if(err) {
-           res.json({
-             err,
-             info: "Api Return"
-            });
-         }else {
-          res.render('random', {
-            post: response,
-            comments: com.data.children,
-            url: response.data.preview ? response.data.preview.images[0].source.url || "" : ""
-          });
-         }
-      })
+    } else {
+      res.locals.response = response;
+      next();
     }
   })
+}
+
+function getCommets (req, res, next) {
+  reddit.comments({
+    r: res.locals.response.data.subreddit,
+    link: res.locals.response.data.id,
+    limit: 5,
+    comments: true
+  }, function (err, com) {
+     if(err) {
+       res.json({
+         err,
+         info: "Api Return"
+        });
+     }else {
+      res.locals.com = com;
+      next()
+     }
+  })
+}
+app.get('/random',getRandom, getCommets ,function (req, res) {
+  res.render('random', {
+    post: res.locals.response,
+    comments: res.locals.com.data.children,
+    url: res.locals.response.data.preview ? res.locals.response.data.preview.images[0].source.url || "" : ""
+  });
 })
 
 app.get('/search', function (req, res) {
@@ -103,8 +113,7 @@ app.get('/search', function (req, res) {
 app.get('/post', function (req, res) {
   // params.sub...and query
   // res.render('post',)
-  // https://www.reddit.com/r/{{sub}}/comments/{{id}}.json
-  res.render('post');
+  res.send('');
 })
 
 /**

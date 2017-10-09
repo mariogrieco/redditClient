@@ -1,0 +1,30 @@
+head
+  meta(charset="utf-8")
+  meta(name="viewport", content="width=device-width, initial-scale=1, user-scalable=no")
+  meta(name="description", content="")
+  meta(name="author", content="")
+  title Reddit - Node App
+  link(href="/vendor/bootstrap/css/bootstrap.min.css", rel="stylesheet")
+  // Custom fonts for this template
+  link(href="/vendor/font-awesome/css/font-awesome.min.css", rel="stylesheet", type="text/css")
+  link(href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic", rel="stylesheet"  type="text/css")
+  link(href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800itali  400,300,600,700,800", rel="stylesheet", type="text/css")
+  // Custom styles for this template
+  link(href="/css/clean-blog.min.css", rel="stylesheet")
+body
+  // Navigation
+  nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top
+    .container
+      a.navbar-brand(href="/") Home
+      button.navbar-toggler.navbar-toggler-right(type="button", data-toggle="collapse"  data-target="#navbarResponsive", aria-controls="navbarResponsive", aria-expanded="false"  aria-label="Toggle navigation")
+        | Menu
+        i.fa.fa-bars
+      #navbarResponsive.collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+          li.nav-item
+            a.nav-link(href="/random") Random Post
+          li.collapse.multi-collapse#btnBuscar 
+            input(id="btn-action", type="text", placeholder="name").form-control.input-text
+          li.nav-item
+            a.nav-link(href="#btnBuscar", ria-expanded="false", aria-controls="btnBuscar"  data-toggle="collapse")
+              i.fa.fa-search(aria-hidden="true")
